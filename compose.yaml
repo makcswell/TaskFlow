@@ -1,0 +1,19 @@
+﻿services:
+  tasksservice:
+    image: tasksservice
+    build:
+      context: .
+      dockerfile: TasksService/Dockerfile
+
+  schedulerservice:
+    image: schedulerservice
+    build:
+      context: .
+      dockerfile: SchedulerService/Dockerfile
+
+  notificationservice:
+    image: notificationservice
+    build:
+      context: .
+      dockerfile: NotificationService/Dockerfile
+

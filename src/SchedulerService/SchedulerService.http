@@ -1,0 +1,6 @@
+@SchedulerService_HostAddress = http://localhost:5050
+
+GET {{SchedulerService_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

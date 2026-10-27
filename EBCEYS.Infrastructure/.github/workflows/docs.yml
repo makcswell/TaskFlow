@@ -1,0 +1,32 @@
+name: Deploy Documentation
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Install DocFX
+        run: dotnet tool install -g docfx
+
+      - name: Build Documentation
+        run: docfx docfx.json
+
+      - name: Add .nojekyll
+        run: touch ./_site/.nojekyll
+
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./_site
+          publish_branch: gh-pages

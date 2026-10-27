@@ -1,0 +1,10 @@
+<Solution>
+  <Folder Name="/EBCEYS.Infrastructure/">
+    <Project Path="EBCEYS.Infrastructure/Ebceys.Infrastructure/Ebceys.Infrastructure.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/NotificationService/NotificationService.csproj" />
+    <Project Path="src/SchedulerService/SchedulerService.csproj" />
+    <Project Path="src/TasksService/TasksService.csproj" />
+  </Folder>
+</Solution>
