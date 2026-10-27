@@ -4,5 +4,9 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <LangVersion>latest</LangVersion>
+        <GenerateDocumentationFile>true</GenerateDocumentationFile>
+        <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+        <WarningsAsErrors/>
+        <NoWarn>1701;1702;NU5104;NU1603;NU5100</NoWarn>
     </PropertyGroup>
 </Project>
