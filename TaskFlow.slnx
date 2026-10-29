@@ -1,10 +1,33 @@
 <Solution>
-  <Folder Name="/EBCEYS.Infrastructure/">
-    <Project Path="EBCEYS.Infrastructure/Ebceys.Infrastructure/Ebceys.Infrastructure.csproj" />
-  </Folder>
   <Folder Name="/src/">
-    <Project Path="src/NotificationService/NotificationService.csproj" />
+      <Project Path="src/NotificationService.Data/NotificationService.Data.csproj"/>
+      <Project Path="src/NotificationService.Domain/NotificationService.Domain.csproj"/>
+      <Project Path="src/NotificationService.Tests/NotificationService.Tests.csproj"/>
     <Project Path="src/SchedulerService/SchedulerService.csproj" />
     <Project Path="src/TasksService/TasksService.csproj" />
+  </Folder>
+    <Folder Name="/src/SchedulerService.Domain/">
+        <Project Path="src/SchedulerService.Domain/ShedulerService.Domain.csproj"/>
+    </Folder>
+    <Folder Name="/src/SchedulerService.Tests/">
+        <Project Path="src/SchedulerService.Tests/ShedulerService.Tests.csproj"/>
+    </Folder>
+    <Folder Name="/src/TasksService.Client/">
+        <Project Path="src/TasksService.Client/TaskFlow.Client.csproj"/>
+    </Folder>
+    <Folder Name="/src/TasksService.Data/">
+        <Project Path="src/TasksService.Data/TaskFlow.Data.csproj"/>
+    </Folder>
+    <Folder Name="/src/TasksService.Domain/">
+        <Project Path="src/TasksService.Domain/TaskFlow.Domain.csproj"/>
+    </Folder>
+    <Folder Name="/src/TasksService.Models/">
+        <Project Path="src/TasksService.Models/TaskFlow.Models.csproj"/>
+    </Folder>
+    <Folder Name="/src/TasksService.Routes/">
+        <Project Path="src/TasksService.Routes/TaskFlow.Routes.csproj"/>
+    </Folder>
+    <Folder Name="/src/TasksService.Tests/">
+        <Project Path="src/TasksService.Tests/TaskFlow.Tests.csproj"/>
   </Folder>
 </Solution>
