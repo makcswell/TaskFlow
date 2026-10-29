@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+        <PackageReference Include="Ebceys.Infrastructure" Version="1.0.58"/>
         <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
     </ItemGroup>
 
@@ -18,7 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\..\EBCEYS.Infrastructure\Ebceys.Infrastructure\Ebceys.Infrastructure.csproj" />
+        <ProjectReference Include="..\..\NotificationService.Domain\NotificationService.Domain.csproj"/>
+        <ProjectReference Include="..\..\NotificationService.Data\NotificationService.Data.csproj"/>
     </ItemGroup>
 
 </Project>

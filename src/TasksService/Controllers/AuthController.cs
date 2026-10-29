@@ -1,36 +1,53 @@
+using System.ComponentModel.DataAnnotations;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Ebceys.Infrastructure.Exceptions; 
-using Ebceys.Infrastructure.Jwt;      
+using Ebceys.Infrastructure.Exceptions;
+using Ebceys.Infrastructure.Helpers.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TasksService.Routes;
 
 namespace TasksService.Controllers;
 
-
+/// <summary>
+/// Запрос на генерацию токена.
+/// </summary>
+/// <param name="UserName">Имя пользователя.</param>
 public record GenerateTokenRequest(string UserName);
+
+/// <summary>
+/// Ответ с токеном.
+/// </summary>
+/// <param name="Token">JWT-токен.</param>
 public record GenerateTokenResponse(string Token);
 
-    [ApiController]
-    [ApiVersion(RoutesDictionary.AuthControllerV1.ApiVersion)]
-    [Route("auth")]
-    public class AuthController : ControllerBase
-    {
-        private const string AuthHeader = "Authorization";
-    
-        [HttpPost(RoutesDictionary.AuthControllerV1.Methods.GetToken)]
-        public IActionResult GetToken(
-            [FromBody] [Required] GenerateTokenRequest request,
-            [FromServices] IJwtGenerator jwtGenerator)
-        {
-            var token = jwtGenerator.GenerateKey(request.UserName.ToClaim(GenerateTokenRequest.UserNameClaimType));
-            return Ok(new GenerateTokenResponse(token));
-        }
-   
+/// <summary>
+/// Контроллер аутентификации.
+/// </summary>
+[ApiController]
+[Route(RoutesDictionary.Auth.Controller)]
+public class AuthController : ControllerBase
+{
+    /// <summary>
+    /// Получить токен.
+    /// </summary>
     [HttpPost("token")]
+    public IActionResult GetToken(
+        [FromBody] [Required] GenerateTokenRequest request,
+        [FromServices] IJwtGenerator jwtGenerator)
+    {
+        var token = jwtGenerator.GenerateKey(request.UserName.ToClaim(ClaimTypes.NameIdentifier));
+        return Ok(new GenerateTokenResponse(token));
+    }
+
+    /// <summary>
+    /// Ручная валидация токена.
+    /// </summary>
+    [HttpPost("validate-token")]
     [AllowAnonymous]
     public IActionResult ValidateToken()
     {
-        if (!Request.Headers.TryGetValue(AuthHeader, out var value))
+        if (!Request.Headers.TryGetValue("Authorization", out var value))
         {
             return ApiExceptionHelper.ThrowApiException<IActionResult>(new ProblemDetails
             {
@@ -41,7 +58,7 @@ public record GenerateTokenResponse(string Token);
         }
 
         var token = new JwtSecurityTokenHandler().ReadJwtToken(value.ToString().Replace("Bearer ", ""));
-        var usernameClaim = token?.Claims.FirstOrDefault(c => c.Type == GenerateTokenRequest.UserNameClaimType);
+        var usernameClaim = token?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
         if (usernameClaim is null)
         {
             return ApiExceptionHelper.ThrowApiException<IActionResult>(new ProblemDetails
@@ -55,6 +72,9 @@ public record GenerateTokenResponse(string Token);
         return Ok();
     }
 
+    /// <summary>
+    /// Проверка валидности токена через атрибут Authorize.
+    /// </summary>
     [HttpGet("validate-auth")]
     [Authorize]
     public IActionResult ValidateAuth()

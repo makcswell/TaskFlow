@@ -1,3 +1,0 @@
-namespace Ebceys.Infrastructure.TestApplication.BoundedContext.Responses;
-
-public record CommandResultResponse(IReadOnlyCollection<EntityResponseDto> Entities);
