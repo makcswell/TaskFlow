@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Ebceys.Infrastructure" Version="1.0.58"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.7" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\..\NotificationService.Domain\NotificationService.Domain.csproj"/>
+        <ProjectReference Include="..\..\NotificationService.Data\NotificationService.Data.csproj"/>
+    </ItemGroup>
+
+</Project>

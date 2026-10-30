@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <FrameworkReference Include="Microsoft.AspNetCore.App" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\TasksService.Domain\TaskFlow.Domain.csproj"/>
+        <ProjectReference Include="..\TasksService.Data\TaskFlow.Data.csproj"/>
+        <ProjectReference Include="..\TasksService.Client\TaskFlow.Client.csproj"/>
+        <ProjectReference Include="..\TasksService.Routes\TaskFlow.Routes.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Ebceys.Infrastructure" Version="1.0.58"/>
+        <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning" Version="5.1.0"/>
+    </ItemGroup>
+
+</Project>
