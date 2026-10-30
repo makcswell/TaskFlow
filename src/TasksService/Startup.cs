@@ -24,7 +24,7 @@ public class Startup : ExtraStartupBase
     /// <summary>
     /// Метаданные сервиса.
     /// </summary>
-    protected override ServiceApiInfo ServiceApiInfo { get; init; } =
+    protected override ServiceApiInfo ServiceApiInfo { get; init; } = 
         new(
             ServiceName: "TasksService",
             BaseAddress: "/tasks",
