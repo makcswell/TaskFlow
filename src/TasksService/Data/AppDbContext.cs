@@ -1,17 +1,17 @@
 using Ebceys.Infrastructure.DatabaseRegistration.Conversions;
 using Microsoft.EntityFrameworkCore;
-using TasksService.Models;
+using TaskFlow.Data;
 
 namespace TasksService.Data;
 
 /// <summary>
-/// Контекст базы данных.
+/// Database context.
 /// </summary>
-/// <param name="options">Опции контекста.</param>
+/// <param name="options">Context options.</param>
 public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
     /// <summary>
-    /// Таблица задач.
+    /// Tasks table.
     /// </summary>
     public DbSet<TaskItem> Tasks => Set<TaskItem>();
 

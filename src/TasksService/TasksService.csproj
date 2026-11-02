@@ -11,11 +11,16 @@
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\TasksService.Domain\TaskFlow.Domain.csproj"/>
         <ProjectReference Include="..\TasksService.Data\TaskFlow.Data.csproj"/>
         <ProjectReference Include="..\TasksService.Client\TaskFlow.Client.csproj"/>
         <ProjectReference Include="..\TasksService.Routes\TaskFlow.Routes.csproj"/>
     </ItemGroup>
+    <!--Copy models xmls from stc nuget packages to build folder for swagger-->
+    <Target Name="_ResolveCopyLocalNuGetPkgXmls" AfterTargets="ResolveReferences">
+        <ItemGroup>
+            <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)..\..\contentFiles\%(Filename).xml')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)'!='' and Exists('%(RootDir)%(Directory)..\..\contentFiles\%(Filename).xml')"/>
+        </ItemGroup>
+    </Target>
 
     <ItemGroup>
         <PackageReference Include="Ebceys.Infrastructure" Version="1.0.58"/>

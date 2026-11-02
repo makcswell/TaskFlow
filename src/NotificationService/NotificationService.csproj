@@ -22,5 +22,11 @@
         <ProjectReference Include="..\..\NotificationService.Domain\NotificationService.Domain.csproj"/>
         <ProjectReference Include="..\..\NotificationService.Data\NotificationService.Data.csproj"/>
     </ItemGroup>
+    <!--Copy models xmls from stc nuget packages to build folder for swagger-->
+    <Target Name="_ResolveCopyLocalNuGetPkgXmls" AfterTargets="ResolveReferences">
+        <ItemGroup>
+            <ReferenceCopyLocalPaths Include="@(ReferenceCopyLocalPaths->'%(RootDir)%(Directory)..\..\contentFiles\%(Filename).xml')" Condition="'%(ReferenceCopyLocalPaths.NuGetPackageId)'!='' and Exists('%(RootDir)%(Directory)..\..\contentFiles\%(Filename).xml')"/>
+        </ItemGroup>
+    </Target>
 
 </Project>

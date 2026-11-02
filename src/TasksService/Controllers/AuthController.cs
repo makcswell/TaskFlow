@@ -5,21 +5,10 @@ using Ebceys.Infrastructure.Exceptions;
 using Ebceys.Infrastructure.Helpers.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using TaskFlow.Data;
 using TasksService.Routes;
 
 namespace TasksService.Controllers;
-
-/// <summary>
-/// Запрос на генерацию токена.
-/// </summary>
-/// <param name="UserName">Имя пользователя.</param>
-public record GenerateTokenRequest(string UserName);
-
-/// <summary>
-/// Ответ с токеном.
-/// </summary>
-/// <param name="Token">JWT-токен.</param>
-public record GenerateTokenResponse(string Token);
 
 /// <summary>
 /// Контроллер аутентификации.
@@ -31,19 +20,19 @@ public class AuthController : ControllerBase
     /// <summary>
     /// Получить токен.
     /// </summary>
-    [HttpPost("token")]
+    [HttpPost(RoutesDictionary.Auth.ValidateAuth)]
     public IActionResult GetToken(
-        [FromBody] [Required] GenerateTokenRequest request,
+        [FromBody] [Required] TaskItem.GenerateTokenRequest request,
         [FromServices] IJwtGenerator jwtGenerator)
     {
         var token = jwtGenerator.GenerateKey(request.UserName.ToClaim(ClaimTypes.NameIdentifier));
-        return Ok(new GenerateTokenResponse(token));
+        return Ok(new TaskItem.GenerateTokenResponse(token));
     }
 
     /// <summary>
     /// Ручная валидация токена.
     /// </summary>
-    [HttpPost("validate-token")]
+    [HttpPost(RoutesDictionary.Auth.ValidateToken)]
     [AllowAnonymous]
     public IActionResult ValidateToken()
     {
@@ -73,9 +62,19 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
+    /// GetById Task model
+    /// </summary>
+    [HttpGet]
+    [Authorize]
+    public IActionResult GetIdGuid([FromQuery] Guid id)
+    {
+        return Ok();
+    }
+
+    /// <summary>
     /// Проверка валидности токена через атрибут Authorize.
     /// </summary>
-    [HttpGet("validate-auth")]
+    [HttpGet(RoutesDictionary.Auth.ValidateAuth)]
     [Authorize]
     public IActionResult ValidateAuth()
     {

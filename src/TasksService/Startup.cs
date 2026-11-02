@@ -2,18 +2,19 @@ using Ebceys.Infrastructure;
 using Ebceys.Infrastructure.DatabaseRegistration;
 using Ebceys.Infrastructure.Models;
 using TasksService.Data;
+using TasksService.Routes;
 
 namespace TasksService;
 
 /// <summary>
-/// Настройка приложения TasksService.
+/// TasksService application configuration.
 /// </summary>
 public class Startup : ExtraStartupBase
 {
     /// <summary>
-    /// Конструктор.
+    /// Constructor.
     /// </summary>
-    /// <param name="configuration">Конфигурация приложения.</param>
+    /// <param name="configuration">Application configuration.</param>
     public Startup(IConfiguration configuration) : base(configuration)
     {
     }
@@ -22,18 +23,18 @@ public class Startup : ExtraStartupBase
     protected override bool UseAuthentication { get; init; } = true;
 
     /// <summary>
-    /// Метаданные сервиса.
+    /// Service metadata.
     /// </summary>
-    protected override ServiceApiInfo ServiceApiInfo { get; init; } = 
+    protected override ServiceApiInfo ServiceApiInfo { get; init; } =
         new(
-            ServiceName: "TasksService",
-            BaseAddress: "/tasks",
-            Description: "Сервис управления задачами TaskFlow");
+            ServiceName: RoutesDictionary.TaskFlowStartup.ServiceName,
+            BaseAddress: RoutesDictionary.TaskFlowStartup.BaseAddress,
+            Description: RoutesDictionary.TaskFlowStartup.Description);
 
     /// <summary>
-    /// Регистрация сервисов.
+    /// Services registration.
     /// </summary>
-    /// <param name="services">Коллекция сервисов.</param>
+    /// <param name="services">Services collection.</param>
     protected override void ServicesConfiguration(IServiceCollection services)
     {
         var connectionString = Configuration.GetConnectionString("DefaultConnection");
@@ -46,10 +47,10 @@ public class Startup : ExtraStartupBase
     }
 
     /// <summary>
-    /// Настройка middleware.
+    /// Middleware configuration.
     /// </summary>
-    /// <param name="app">Построитель приложения.</param>
-    /// <param name="env">Окружение хоста.</param>
+    /// <param name="app">Application builder.</param>
+    /// <param name="env">Host environment.</param>
     protected override void ConfigureMiddlewares(IApplicationBuilder app, IHostEnvironment env)
     {
     }
