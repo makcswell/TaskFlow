@@ -42,16 +42,4 @@ public class TaskItem
     ///UserId
     ///</summary>
     public string UserId { get; set; } = string.Empty;
-
-    /// <summary>
-    /// Запрос на генерацию токена.
-    /// </summary>
-    /// <param name="UserName">Имя пользователя.</param>
-    public record GenerateTokenRequest(string UserName);
-
-    /// <summary>
-    /// Ответ с токеном.
-    /// </summary>
-    /// <param name="Token">JWT-токен.</param>
-    public record GenerateTokenResponse(string Token);
 }

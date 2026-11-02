@@ -22,11 +22,11 @@ public class AuthController : ControllerBase
     /// </summary>
     [HttpPost(RoutesDictionary.Auth.ValidateAuth)]
     public IActionResult GetToken(
-        [FromBody] [Required] TaskItem.GenerateTokenRequest request,
+        [FromBody] [Required] GenerateTokenRequest request,
         [FromServices] IJwtGenerator jwtGenerator)
     {
         var token = jwtGenerator.GenerateKey(request.UserName.ToClaim(ClaimTypes.NameIdentifier));
-        return Ok(new TaskItem.GenerateTokenResponse(token));
+        return Ok(new GenerateTokenResponse(token));
     }
 
     /// <summary>
