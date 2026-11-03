@@ -16,13 +16,13 @@ namespace TasksService.Controllers;
 [Route(RoutesDictionary.Auth.Controller)]
 public class AuthController : ControllerBase
 {
-    private readonly ICommandExecutor _executor;
+    private readonly IScopedCommandExecutor _executor;
 
     /// <summary>
     /// Command executor injection
     /// </summary>
     /// <param name="executor"></param>
-    public AuthController(ICommandExecutor executor)
+    public AuthController(IScopedCommandExecutor executor)
     {
         _executor = executor;
     }
@@ -35,8 +35,8 @@ public class AuthController : ControllerBase
     /// <returns>The auth token.</returns>
     [HttpPost(RoutesDictionary.Auth.GetToken)] // <-- Исправил на GetToken
     [ProducesResponseType(typeof(GenerateTokenResponse), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public IActionResult GetToken(
         [FromBody] [Required] GenerateTokenRequest request,
         [FromServices] IJwtGenerator jwtGenerator)
@@ -54,7 +54,7 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> ValidateToken()
     {
-        await _executor.ExecuteCommandAsync<IHeaderDictionary, bool>(Request.Headers);
+        await _executor.ExecuteAsync<IHeaderDictionary, bool>(Request.Headers);
         return Ok();
     }
 
@@ -66,7 +66,7 @@ public class AuthController : ControllerBase
     [HttpGet]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public IActionResult GetIdGuid([FromQuery] Guid id)
     {
         return Ok();
@@ -78,7 +78,7 @@ public class AuthController : ControllerBase
     [HttpGet(RoutesDictionary.Auth.ValidateAuth)]
     [Authorize]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public IActionResult ValidateAuth()
     {
         return Ok();
