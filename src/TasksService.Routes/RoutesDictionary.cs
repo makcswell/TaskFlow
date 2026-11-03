@@ -6,11 +6,6 @@ namespace TasksService.Routes;
 public static class RoutesDictionary
 {
     /// <summary>
-    /// Service ID route (empty for base controller path).
-    /// </summary>
-    public const string ServiceId = "";
-
-    /// <summary>
     /// Auth constants.
     /// </summary>
     public static class Auth
@@ -52,6 +47,11 @@ public static class RoutesDictionary
     /// </summary>
     public static class TaskFlowStartup
     {
+        /// <summary>
+        /// Service Id.
+        /// </summary>
+        public const string ServiceId = "Task-service";
+
         /// <summary>
         /// Base address.
         /// </summary>
