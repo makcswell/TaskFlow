@@ -29,7 +29,7 @@ public class Startup : ExtraStartupBase
     /// </summary>
     protected override ServiceApiInfo ServiceApiInfo { get; init; } =
         new(
-            ServiceName: RoutesDictionary.TaskFlowStartup.ServiceName,
+            ServiceName: RoutesDictionary.ServiceId,
             BaseAddress: RoutesDictionary.TaskFlowStartup.BaseAddress,
             Description: RoutesDictionary.TaskFlowStartup.Description);
 

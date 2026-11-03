@@ -53,11 +53,6 @@ public static class RoutesDictionary
     public static class TaskFlowStartup
     {
         /// <summary>
-        /// Service name.
-        /// </summary>
-        public const string ServiceName = "Task-service";
-
-        /// <summary>
         /// Base address.
         /// </summary>
         public const string BaseAddress = "/tasks";

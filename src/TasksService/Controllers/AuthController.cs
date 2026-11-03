@@ -33,16 +33,16 @@ public class AuthController : ControllerBase
     /// <param name="request">The auth request model.</param>
     /// <param name="jwtGenerator">JWT generator service.</param>
     /// <returns>The auth token.</returns>
-    [HttpPost(RoutesDictionary.Auth.GetToken)] // <-- Исправил на GetToken
-    [ProducesResponseType(typeof(GenerateTokenResponse), StatusCodes.Status200OK)]
+    [HttpPost(RoutesDictionary.Auth.GetToken)]
+    [ProducesResponseType(typeof(TokenRequest), StatusCodes.Status200OK)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status401Unauthorized)]
     public IActionResult GetToken(
-        [FromBody] [Required] GenerateTokenRequest request,
+        [FromBody] [Required] UserNameRequest request,
         [FromServices] IJwtGenerator jwtGenerator)
     {
         var token = jwtGenerator.GenerateKey(request.UserName.ToClaim(ClaimTypes.NameIdentifier));
-        return Ok(new GenerateTokenResponse(token));
+        return Ok(new TokenRequest { Token = token });
     }
 
     /// <summary>
