@@ -1,6 +1,8 @@
 using Ebceys.Infrastructure;
 using Ebceys.Infrastructure.DatabaseRegistration;
+using Ebceys.Infrastructure.Extensions;
 using Ebceys.Infrastructure.Models;
+using TasksService.Commands;
 using TasksService.Data;
 using TasksService.Routes;
 
@@ -44,6 +46,7 @@ public class Startup : ExtraStartupBase
             opts.ConnectionString = connectionString;
             opts.MigrateDb = true;
         });
+        services.AddScopedCommand<ValidateTokenCommand, IHeaderDictionary, bool>();
     }
 
     /// <summary>

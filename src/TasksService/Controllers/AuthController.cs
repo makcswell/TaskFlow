@@ -1,7 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
-using Ebceys.Infrastructure.Exceptions;
+using Ebceys.Infrastructure.Helpers;
 using Ebceys.Infrastructure.Helpers.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -11,16 +10,33 @@ using TasksService.Routes;
 namespace TasksService.Controllers;
 
 /// <summary>
-/// Контроллер аутентификации.
+/// Auth controller.
 /// </summary>
 [ApiController]
 [Route(RoutesDictionary.Auth.Controller)]
 public class AuthController : ControllerBase
 {
+    private readonly ICommandExecutor _executor;
+
     /// <summary>
-    /// Получить токен.
+    /// Command executor injection
     /// </summary>
-    [HttpPost(RoutesDictionary.Auth.ValidateAuth)]
+    /// <param name="executor"></param>
+    public AuthController(ICommandExecutor executor)
+    {
+        _executor = executor;
+    }
+
+    /// <summary>
+    /// Get auth token.
+    /// </summary>
+    /// <param name="request">The auth request model.</param>
+    /// <param name="jwtGenerator">JWT generator service.</param>
+    /// <returns>The auth token.</returns>
+    [HttpPost(RoutesDictionary.Auth.GetToken)] // <-- Исправил на GetToken
+    [ProducesResponseType(typeof(GenerateTokenResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(string), StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult GetToken(
         [FromBody] [Required] GenerateTokenRequest request,
         [FromServices] IJwtGenerator jwtGenerator)
@@ -30,52 +46,39 @@ public class AuthController : ControllerBase
     }
 
     /// <summary>
-    /// Ручная валидация токена.
+    /// Manual token validation.
     /// </summary>
     [HttpPost(RoutesDictionary.Auth.ValidateToken)]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status403Forbidden)]
     [AllowAnonymous]
-    public IActionResult ValidateToken()
+    public async Task<IActionResult> ValidateToken()
     {
-        if (!Request.Headers.TryGetValue("Authorization", out var value))
-        {
-            return ApiExceptionHelper.ThrowApiException<IActionResult>(new ProblemDetails
-            {
-                Status = StatusCodes.Status403Forbidden,
-                Detail = "Not Authorized",
-                Title = "Unauthorized"
-            });
-        }
-
-        var token = new JwtSecurityTokenHandler().ReadJwtToken(value.ToString().Replace("Bearer ", ""));
-        var usernameClaim = token?.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier);
-        if (usernameClaim is null)
-        {
-            return ApiExceptionHelper.ThrowApiException<IActionResult>(new ProblemDetails
-            {
-                Status = StatusCodes.Status403Forbidden,
-                Detail = "Not Authorized",
-                Title = "Unauthorized"
-            });
-        }
-
+        await _executor.ExecuteCommandAsync<IHeaderDictionary, bool>(Request.Headers);
         return Ok();
     }
 
+
     /// <summary>
-    /// GetById Task model
+    /// Get task by ID.
     /// </summary>
+    /// <param name="id">Task ID.</param>
     [HttpGet]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult GetIdGuid([FromQuery] Guid id)
     {
         return Ok();
     }
 
     /// <summary>
-    /// Проверка валидности токена через атрибут Authorize.
+    /// Validate token via Authorize attribute.
     /// </summary>
     [HttpGet(RoutesDictionary.Auth.ValidateAuth)]
     [Authorize]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     public IActionResult ValidateAuth()
     {
         return Ok();
